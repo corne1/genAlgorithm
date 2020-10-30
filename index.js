@@ -5,3 +5,4 @@ const somevar = new ga();
 somevar.createInitialPopulation();
 somevar.panmection();
 somevar.crossingover();
+somevar.mutation();
