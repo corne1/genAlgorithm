@@ -1,8 +1,6 @@
 const ga = require('./GenAlgorithm');
 
-const somevar = new ga();
+const geneticAlgorithm = new ga();
 
-somevar.createInitialPopulation();
-somevar.panmection();
-somevar.crossingover();
-somevar.mutation();
+geneticAlgorithm.main();
+

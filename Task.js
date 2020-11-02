@@ -1,15 +1,37 @@
-export default class Task {
+class Task {
     a;
     b;
     ymin;
     x1min;
     x2min;
 
-    constructor(params) {
-        
+    constructor(a, b) {
+        this.a = a;
+        this.b = b;
     }
 
     someMethodDouble() {
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
     }
 }
+
+module.exports = Task;
