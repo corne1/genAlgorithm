@@ -1,0 +1,1 @@
+to run this app, type to command line: 'node index.js'

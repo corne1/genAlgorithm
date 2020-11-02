@@ -33,10 +33,10 @@ class GA {
 
         console.log('Начальная популяция:');
         console.log('№|Генотип хромосомы№1|Генотип хромосомы№2');
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < this.N; i++) {
             let x1 = i + 1 + '| ';
             let x2 = '  | ';
-            for (let j = 0; j < 8; j++) {
+            for (let j = 0; j < this.l; j++) {
                 x1 += `${rodArrx1[i][j]} `
                 x2 += `${rodArrx2[i][j]} `
             }
@@ -47,12 +47,12 @@ class GA {
     }
 
     panmection() {
-        let somearr = [];
+        let indArray = [];
         for (let i = 0; i < this.N; i++) {
             let ind = getRandomInt(this.N);
 
-            if (!somearr.includes(ind)) {
-                somearr.push(ind);
+            if (!indArray.includes(ind)) {
+                indArray.push(ind);
             } else {
                 i--;
             }
@@ -67,7 +67,7 @@ class GA {
         }
 
         for (let i = 0; i < this.N; i++) {
-            let idx = somearr[i]
+            let idx = indArray[i]
             rodArrx1[i] = this.personRef.x1[idx]
             rodArrx2[i] = this.personRef.x2[idx]
         }
@@ -84,7 +84,7 @@ class GA {
             } else {
                 x1 = '________| '
             }
-            x1 += (somearr[i] + 1) + '    | ';
+            x1 += (indArray[i] + 1) + '    | ';
 
             for (let j = 0; j < this.l; j++) {
                 x1 += `${rodArrx1[i][j]} `
@@ -251,7 +251,7 @@ class GA {
         data.map((item) => {
             let resultDisplay = '';
 
-            resultDisplay += `${item.id}  | ${item.chromeValue1} | ${item.chromeValue2} | ${item.x1} | ${item.x2} | ${item.funcValue}`
+            resultDisplay += `${item.id}| ${item.chromeValue1} | ${item.chromeValue2} | ${item.x1} | ${item.x2} | ${item.funcValue}`
             console.log(resultDisplay);
         })
         this.population = data;
@@ -264,7 +264,7 @@ class GA {
         this.population.map((item, i) => {
             let selectionDisplay = '';
             if (i < 6) {
-                selectionDisplay += `${item.id} | ${item.chrome1} | ${item.chrome2} | ${item.funcValue}`
+                selectionDisplay += `${item.id} | ${item.chrome1}      | ${item.chrome2}     | ${item.funcValue}`
             } else {
                 return;
             }
