@@ -10,28 +10,7 @@ class Task {
         this.b = b;
     }
 
-    someMethodDouble() {
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-    }
+    someMethodDouble() { }
 }
 
 module.exports = Task;

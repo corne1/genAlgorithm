@@ -99,7 +99,6 @@ class GA {
         this.population.push(rodArrx2);
     }
 
-
     crossingover() {
         let rodArrx1 = this.personRef.x1;
         let rodArrx2 = this.personRef.x2;
@@ -148,10 +147,8 @@ class GA {
         }
         this.personRef.x1 = rodArrx1;
         this.personRef.x2 = rodArrx2;
-        // console.log(this.personRef);
         this.population.push(rodArrx1);
         this.population.push(rodArrx2);
-
     }
 
     mutation() {

@@ -1,6 +1,5 @@
-const ga = require('./GenAlgorithm');
+const ga = require('./GenAlgorithm1');
 
 const geneticAlgorithm = new ga();
 
 geneticAlgorithm.main();
-
