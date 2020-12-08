@@ -47,19 +47,21 @@ class GA {
     }
 
     genotypicОutbreeding() {
-        let lostIndivids = this.personRef;
+        let lostIndivids = {};
+        lostIndivids.x1 = this.personRef.x1;
+        lostIndivids.x2 = this.personRef.x2;
         let rodArr = [];
         console.log('Сформируем родительские пары особей, с использованием генотипного аутбридинга');
         console.log('Вычисляем Хеммингового расстояния между первой и второй особью.');
         let hammingDistanceArray = []
-        let differentSumIndiv1 = 0;
+        let differentSumIndivid = 0;
 
         for (let i = 1; i < this.N; i++) {
             for (let j = 0; j < this.l; j++) {
-                differentSumIndiv1 += Math.abs(this.personRef.x1[0][j] - this.personRef.x1[i][j]) + Math.abs(this.personRef.x2[0][j] - this.personRef.x2[i][j]);
+                differentSumIndivid += Math.abs(lostIndivids.x1[0][j] - lostIndivids.x1[i][j]) + Math.abs(lostIndivids.x2[0][j] - lostIndivids.x2[i][j]);
             }
-            hammingDistanceArray.push(differentSumIndiv1);
-            differentSumIndiv1 = 0;
+            hammingDistanceArray.push(differentSumIndivid);
+            differentSumIndivid = 0;
         }
 
         let maxhr = {
@@ -67,9 +69,13 @@ class GA {
             hr: 0
         };
 
-        let idxs = [2, 3, 4, 5, 6]
+        let individNumbers = [];
+        for (let i = 1; i < this.N; i++) {
+            individNumbers.push(i + 1);
+        }
+
         hammingDistanceArray.map((item, i) => {
-            console.log('Хеммингово расстояние для ', i + 2, 'особи: ', item);
+            console.log('Хеммингово расстояние для ', individNumbers[i], 'особи: ', item);
             if (item > maxhr.hr) {
                 maxhr.hr = item;
                 maxhr.idx = i;
@@ -84,31 +90,30 @@ class GA {
         rodArr.push(
             {
                 individNumber: 1,
-                chromosome1: this.personRef.x1[0],
-                chromosome2: this.personRef.x2[0]
+                chromosome1: lostIndivids.x1[0],
+                chromosome2: lostIndivids.x2[0]
             },
             {
                 individNumber: maxhr.idx + 2,
-                chromosome1: this.personRef.x1[maxhr.idx + 1],
-                chromosome2: this.personRef.x2[maxhr.idx + 1],
+                chromosome1: lostIndivids.x1[maxhr.idx + 1],
+                chromosome2: lostIndivids.x2[maxhr.idx + 1],
             },
         )
 
-        idxs.splice(maxhr.idx, 1)
+        individNumbers.splice(maxhr.idx, 1)
         lostIndivids.x1.splice(0, 1)
         lostIndivids.x2.splice(0, 1)
 
         lostIndivids.x1.splice(maxhr.idx, 1)
         lostIndivids.x2.splice(maxhr.idx, 1)
-
         //Удалили первую пару из массива
-        console.log('Далее вычисляем расстояние между особью №', idxs[0], ' и оставшимися без пары особями.');
+        console.log('Далее вычисляем расстояние между особью №', individNumbers[0], ' и оставшимися без пары особями.');
         for (let i = 1; i < this.N - 2; i++) {
             for (let j = 0; j < this.l; j++) {
-                differentSumIndiv1 += Math.abs(lostIndivids.x1[0][j] - lostIndivids.x1[i][j]) + Math.abs(lostIndivids.x2[0][j] - lostIndivids.x2[i][j]);
+                differentSumIndivid += Math.abs(lostIndivids.x1[0][j] - lostIndivids.x1[i][j]) + Math.abs(lostIndivids.x2[0][j] - lostIndivids.x2[i][j]);
             }
-            hammingDistanceArray.push({ hr: differentSumIndiv1, idx: idxs[i] });
-            differentSumIndiv1 = 0;
+            hammingDistanceArray.push({ hr: differentSumIndivid, idx: individNumbers[i] });
+            differentSumIndivid = 0;
         }
 
         maxhr = {
@@ -127,22 +132,24 @@ class GA {
         hammingDistanceArray = []
         console.log('Максимальное значение Хеммингово расстояния: ', maxhr.hr, 'Особь: ', maxhr.idx);
 
-        console.log('Создаем пару состоящую из ', idxs[0], 'особи и ', maxhr.idx);
+        console.log('Создаем пару состоящую из ', individNumbers[0], 'особи и ', maxhr.idx);
+        let indexofReqNum = individNumbers.indexOf(maxhr.idx)
+
         rodArr.push(
             {
-                individNumber: idxs[0],
+                individNumber: individNumbers[0],
                 chromosome1: lostIndivids.x1[0],
                 chromosome2: lostIndivids.x2[0]
             },
             {
                 individNumber: maxhr.idx,
-                chromosome1: lostIndivids.x1[1],
-                chromosome2: lostIndivids.x2[1]
+                chromosome1: lostIndivids.x1[indexofReqNum],
+                chromosome2: lostIndivids.x2[indexofReqNum]
             },
-        )
-        idxs.splice(0, 1)
-        let indexofReqNum = idxs.indexOf(maxhr.idx)
-        idxs.splice(indexofReqNum, 1)
+        );
+        individNumbers.splice(0, 1)
+        indexofReqNum = individNumbers.indexOf(maxhr.idx)
+        individNumbers.splice(indexofReqNum, 1);
         lostIndivids.x1.splice(0, 1)
         lostIndivids.x2.splice(0, 1)
 
@@ -151,17 +158,18 @@ class GA {
 
         rodArr.push(
             {
-                individNumber: idxs[0],
+                individNumber: individNumbers[0],
                 chromosome1: lostIndivids.x1[0],
                 chromosome2: lostIndivids.x2[0]
             },
             {
-                individNumber: idxs[1],
+                individNumber: individNumbers[1],
                 chromosome1: lostIndivids.x1[1],
                 chromosome2: lostIndivids.x2[1],
             },
         )
-        console.log('Создаем последнюю пару из оставшихся особей ', idxs[0], ' и ', idxs[1]);
+        lostIndivids = null;
+        console.log('Создаем последнюю пару из оставшихся особей ', individNumbers[0], ' и ', individNumbers[1]);
         console.log('№ | генот. хром x1  | генотип хромосомы x2');
         rodArr.map((item) => {
             console.log(item.individNumber, '|', item.chromosome1.join(' '), '|', item.chromosome2.join(' '));
@@ -170,8 +178,10 @@ class GA {
         rodArr.map((item, i) => {
             item.individNumber = i + 1;
         })
+
         this.personRef = rodArr;
         this.population.push(rodArr)
+
     }
 
     homogeneousСrossingover() {
@@ -186,7 +196,7 @@ class GA {
                 chromosomeMask[k] = getRandomInt(2);
             }
             console.log('Хромосома-маска: ', chromosomeMask.join(' '));
-            
+
             let individ1Chromosome1 = [];
             let individ1Chromosome2 = [];
 
@@ -256,7 +266,6 @@ class GA {
     decoder() {
         console.log('№ос|ДесЗначДвКХр№1|ДесЗначДвКХр№2|ЗначПрFx1|ЗначПрFx2|ЗнчF(x1,x2)')
         const data = [];
-
         this.population.map((item) => {
             item.map((individ) => {
                 let parseX1 = parseInt(individ.chromosome1.join(''), 2);
@@ -339,15 +348,20 @@ class GA {
         })
 
         console.log('Таким образом, в следующее поколение выбираются особи: ', next_population.join(', '));
+        this.population = [];
     }
 
     main() {
-        this.createInitialPopulation();
-        this.genotypicОutbreeding();
-        this.homogeneousСrossingover()
-        this.twoPointInversion()
-        this.decoder();
-        this.selection();
+        for (let i = 0; i < 5; i++) {
+            console.log('------------', i + 1, 'START---------------');
+            this.createInitialPopulation();
+            this.genotypicОutbreeding();
+            this.homogeneousСrossingover()
+            this.twoPointInversion()
+            this.decoder();
+            this.selection();
+            console.log('------------', i + 1, 'END---------------');
+        }
     }
 }
 
